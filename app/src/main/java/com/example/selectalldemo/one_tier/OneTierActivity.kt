@@ -46,6 +46,20 @@ class OneTierActivity : AppCompatActivity(), ItemChecker {
         }
 
         binding.oneTierRv.adapter = adapter
+
+        binding.selectAllOneTier.setOnClickListener {
+            if (binding.selectAllOneTier.isChecked) {
+                viewModel.selectAll()
+            } else {
+                viewModel.removeAll()
+            }
+        }
+
+        binding.swipeRefresgOneTier.setOnRefreshListener {
+            viewModel.removeAll()
+            binding.selectAllOneTier.isChecked = false
+            binding.swipeRefresgOneTier.isRefreshing = false
+        }
     }
 
     override fun setItemChcek(product: OneTier) {
