@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Select All Demo</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="item_count">Item count:</string>
+    <string name="price_format">Rp%1$s</string>
 </resources>
