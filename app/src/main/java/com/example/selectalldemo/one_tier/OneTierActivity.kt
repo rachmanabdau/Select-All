@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.selectalldemo.R
 import com.example.selectalldemo.databinding.ActivityOneTierBinding
 
-class OneTierActivity : AppCompatActivity() {
+class OneTierActivity : AppCompatActivity(), ItemChecker {
 
     private lateinit var viewModel: OneTierViewModel
 
@@ -30,7 +30,7 @@ class OneTierActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding: ActivityOneTierBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_one_tier)
-        val adapter = OneTierAdapter().apply {
+        val adapter = OneTierAdapter(this as ItemChecker).apply {
             submitList(generateOneTierSample())
         }
 
@@ -46,6 +46,10 @@ class OneTierActivity : AppCompatActivity() {
         }
 
         binding.oneTierRv.adapter = adapter
+    }
+
+    override fun setItemChcek(product: OneTier) {
+        if (product.isChecked) viewModel.selectItem(product) else viewModel.removeItem(product)
     }
 
     private fun generateOneTierSample(): MutableList<OneTier> {

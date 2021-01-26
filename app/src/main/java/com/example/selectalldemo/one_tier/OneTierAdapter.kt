@@ -23,14 +23,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.selectalldemo.R
 import com.example.selectalldemo.databinding.OneTierItemBinding
 
-class OneTierAdapter
-    : ListAdapter<OneTier, OneTierViewHolder>(DiffCallback), Selector {
+class OneTierAdapter(private val checker: ItemChecker) :
+    ListAdapter<OneTier, OneTierViewHolder>(DiffCallback), Selector {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OneTierViewHolder {
         val viewHolderBinding = OneTierItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return OneTierViewHolder(viewHolderBinding)
+        return OneTierViewHolder(viewHolderBinding, checker)
     }
 
     override fun onBindViewHolder(holder: OneTierViewHolder, position: Int) {
@@ -65,7 +65,8 @@ class OneTierAdapter
 }
 
 class OneTierViewHolder(
-    private val binding: OneTierItemBinding
+    private val binding: OneTierItemBinding,
+    private val checker: ItemChecker
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun onBind(product: OneTier) {
@@ -78,6 +79,7 @@ class OneTierViewHolder(
         binding.productName.isChecked = product.isChecked
         binding.productName.setOnCheckedChangeListener { _, isChecked ->
             product.isChecked = isChecked
+            checker.setItemChcek(product)
         }
     }
 
