@@ -24,7 +24,7 @@ import com.example.selectalldemo.R
 import com.example.selectalldemo.databinding.OneTierItemBinding
 
 class OneTierAdapter
-    : ListAdapter<OneTier, OneTierViewHolder>(DiffCallback) {
+    : ListAdapter<OneTier, OneTierViewHolder>(DiffCallback), Selector {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OneTierViewHolder {
         val viewHolderBinding = OneTierItemBinding.inflate(
@@ -47,6 +47,20 @@ class OneTierAdapter
             return oldItem == newItem
         }
 
+    }
+
+    override fun selectItem(product: OneTier) {
+        this.currentList.find { it == product }?.isChecked = true
+        notifyDataSetChanged()
+    }
+
+    override fun removeItem(product: OneTier) {
+        this.currentList.find { it == product }?.isChecked = false
+        notifyDataSetChanged()
+    }
+
+    override fun getAllList(): List<OneTier> {
+        return currentList
     }
 }
 
