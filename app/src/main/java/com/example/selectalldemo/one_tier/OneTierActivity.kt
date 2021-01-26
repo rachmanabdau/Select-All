@@ -18,10 +18,13 @@ package com.example.selectalldemo.one_tier
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.selectalldemo.R
 import com.example.selectalldemo.databinding.ActivityOneTierBinding
 
 class OneTierActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: OneTierViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +32,17 @@ class OneTierActivity : AppCompatActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_one_tier)
         val adapter = OneTierAdapter().apply {
             submitList(generateOneTierSample())
+        }
+
+        val viewModelFactory = OneTierViewModel.Factory(adapter as Selector)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(OneTierViewModel::class.java)
+
+        viewModel.oneTierItems.observe(this) { item ->
+            binding.quantityCount.text = item.size.toString()
+            binding.selectAllOneTier.isChecked = item.containsAll(adapter.getAllList())
+
+            val price = item.sumByDouble { it.price }
+            binding.totalCount.text = getString(R.string.price_format, price.toString())
         }
 
         binding.oneTierRv.adapter = adapter
